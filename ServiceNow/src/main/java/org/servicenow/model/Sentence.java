@@ -1,18 +1,25 @@
 package org.servicenow.model;
 
+import org.servicenow.utilities.PropertiesReader;
+
+import java.util.Arrays;
+
 public class Sentence {
+    public static final String SPACE = " ";
+    public static final String INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX = "investigator.private.first.word.index";
+
     private int id;
-    private String sentenceText;
-
-
+    private String[] sentenceArr;
 
     public Sentence(String line) {
-        this.sentenceText = line;
-        this.id = sentenceText.substring(20).hashCode();//SimpleIdGenerator.getInstance().getNewId();
+        sentenceArr = line.split(SPACE);
+        this.id = SimpleIdGenerator.getInstance().getNewId(line);
     }
 
     public String getSentenceText() {
-        return sentenceText;
+        StringBuilder sentenceText = new StringBuilder();
+        Arrays.stream(sentenceArr).forEach(sentence -> sentenceText.append(sentence).append(SPACE));
+        return sentenceText.toString().trim();
     }
 
     public int getId() {
@@ -20,10 +27,15 @@ public class Sentence {
     }
 
     public boolean isValid() {
-        return sentenceText.split(" ").length>2;
+        int firstIndex = Integer.parseInt(PropertiesReader.getInstance().getProperty(INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX));
+        return sentenceArr.length > firstIndex;
     }
 
     public String getWordAtIndex(int index) {
-        return getSentenceText().split(" ")[index];
+        return sentenceArr[index];
+    }
+
+    public String[] getSentenceArr() {
+        return sentenceArr;
     }
 }

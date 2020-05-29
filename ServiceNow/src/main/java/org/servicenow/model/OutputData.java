@@ -1,20 +1,20 @@
 package org.servicenow.model;
 
+import org.servicenow.controller.FilePrinter;
+import org.servicenow.controller.Printer;
 import org.servicenow.utilities.PropertiesReader;
+import org.servicenow.utilities.UniqueValueGenerator;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class OutputData {
     public static final String SPACE = " ";
+    public static final String INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX = "investigator.private.first.word.index";
+    public static final String THE_CHANGING_WORD_WAS = "The changing word was: ";
+    public static final String Comma = ", ";
+    public static final String NEW_LINE = "\n";
     HashMap<String, Set<Integer>> similarityMap;
     Set<String> similarityOutput;
 
@@ -28,10 +28,11 @@ public class OutputData {
     }
 
     public void add(Sentence sentence) {
-        String[] sentenceArray = sentence.getSentenceText().split(SPACE);
-        for(int i=2; i<sentenceArray.length ; i++){
-            int skipperKey = generateKey(sentenceArray,i);
-            addToSimilarityMap(skipperKey,i,sentence.getId());
+        int firstIndex = Integer.parseInt(PropertiesReader.getInstance().getProperty(INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX));
+
+        for(int i=firstIndex ; i<sentence.getSentenceArr().length ; i++){
+            int skipperKey = generateKey(sentence.getSentenceArr(), i);
+            addToSimilarityMap(skipperKey, i, sentence.getId());
         }
     }
 
@@ -49,42 +50,44 @@ public class OutputData {
 
     private int generateKey(String[] sentenceArray, int wordToSkip) {
         StringBuilder subString = new StringBuilder();
-        for(int i=2 ; i<sentenceArray.length ; i++){
+        int firstIndex = Integer.parseInt(PropertiesReader.getInstance().getProperty(INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX));
+        for(int i=firstIndex ; i<sentenceArray.length ; i++){
             if(i == wordToSkip){
                 continue;
             }
             subString.append(sentenceArray[i]).append(SPACE);
         }
-        return subString.toString().hashCode();
+        return UniqueValueGenerator.getUniqueCode(subString.toString());
     }
 
     public void printResults(Sentences sentences) {
-        similarityOutput.stream().forEach(key -> fetchAndPrint(key.split("\\$")[1], similarityMap.get(key),sentences));
+        Printer printer = new FilePrinter();
+        printer.print(fetchResults(sentences));
+
     }
 
-    private void fetchAndPrint(String changingWordIndex, Set<Integer> sentencesToGet, Sentences allSentencecs) {
+    private String fetchResults(Sentences sentences) {
+        StringBuilder results = new StringBuilder();
+        similarityOutput.stream().forEach(key -> results.append(fetchSimilarity(key.split("\\$")[1], similarityMap.get(key),sentences)));
+        return results.toString();
+    }
+
+    private String fetchSimilarity(String changingWordIndex, Set<Integer> sentencesToGet, Sentences allSentencecs) {
+        StringBuilder result = new StringBuilder();
         StringBuilder changingWords = new StringBuilder();
 
         sentencesToGet.forEach(id-> {
             Sentence sentence = allSentencecs.getSentenceByID(id);
-            System.out.println(sentence.getSentenceText());
-            changingWords.append(sentence.getWordAtIndex(Integer.parseInt(changingWordIndex))).append(", ");
+            result.append(sentence.getSentenceText()).append(NEW_LINE);
+            changingWords.append(sentence.getWordAtIndex(Integer.parseInt(changingWordIndex))).append(Comma);
         });
-        String changingWordsStr = changingWords.toString();
-        Path path = Paths.get( PropertiesReader.getInstance().getProperty("investigator.private.output"));
-        try (BufferedWriter writer = Files.newBufferedWriter(path))
-        {
-            try {
-                writer.append("The changing word was: " + changingWordsStr.substring(0, changingWordsStr.length()-2));
-                writer.append("");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("The changing word was: " + changingWordsStr.substring(0, changingWordsStr.length()-2));
-        System.out.println("");
+        result.append(THE_CHANGING_WORD_WAS).
+                append(changingWords.toString(), 0, changingWords.length()-2).
+                append("\n\n");
+
+        return  result.toString();
     }
+
+
 
 }

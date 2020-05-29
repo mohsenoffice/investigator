@@ -1,5 +1,5 @@
 package org.servicenow.model;
 
 public interface IdGenerator {
-    public int getNewId();
+    int getNewId(String sid);
 }

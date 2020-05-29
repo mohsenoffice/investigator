@@ -1,12 +1,7 @@
 package org.servicenow.utilities;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.SimpleResultTreeImpl;
-import org.servicenow.model.SimpleIdGenerator;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 
 public class PropertiesReader {
