@@ -1,18 +1,17 @@
 package org.servicenow.model;
 
-import com.sun.org.apache.bcel.internal.generic.IFGE;
+import org.servicenow.utilities.PropertiesReader;
+import org.servicenow.utilities.UniqueValueGenerator;
 
 /**
  * Simple ID generator - behave like a counter
  *
  */
 public class SimpleIdGenerator implements IdGenerator {
-    private static SimpleIdGenerator simpleIdGenerator=null;
 
-    private static int counter;
+    private static SimpleIdGenerator simpleIdGenerator;
 
     private SimpleIdGenerator() {
-        counter = 0;
     }
 
     public static SimpleIdGenerator getInstance(){
@@ -22,12 +21,9 @@ public class SimpleIdGenerator implements IdGenerator {
         return simpleIdGenerator;
     }
 
-    /**
-     * Should be synchronized if it's called from multiple threads
-     * @return new ID
-     */
     @Override
-    public int getNewId() {
-        return ++counter;
+    public int getNewId(String sid) {
+        int minRawLength = Integer.parseInt(PropertiesReader.getInstance().getProperty("investigator.private.min.raw.Length"));
+        return sid.length() >=  minRawLength  ? UniqueValueGenerator.getUniqueCode(sid.substring(minRawLength)) : UniqueValueGenerator.getUniqueCode(sid);
     }
 }
