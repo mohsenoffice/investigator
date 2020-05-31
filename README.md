@@ -3,6 +3,15 @@
 This project groups together similar sentences (sentences where only a single word has
 changed) and extracts the changes.
 
+**To run the project**
+1) clone the project
+
+git clone https://github.com/mohsenoffice/investigator.git
+
+2) mvn clean install
+
+3) java -cp target/ServiceNow-1.0-SNAPSHOT.jar org.servicenow.App
+
 
 **Assumptions:**
 
