@@ -57,7 +57,7 @@ So the time complexity is O(M*N)
 - 2.2) Split the Line into array (Separate by space)
 - 2.3) Generate a unique key for the string without one word (for each word) and append to the is key the index of the missing word
 - 2.4) check if the generated key existing in a HashMap as a key (Key is the generated key, Value is a list of Message ID's)
- - *      2.4.1) if exist - simple add the message id to the list  of ID's and add the generated ID to other list(similarityOutput) (to help picking the similar messages)
- - *      2.4.2) if not - Add the above key to a HashMap as a key , and let the value to be the message ID
+  *      2.4.1) if exist - simple add the message id to the list  of ID's and add the generated ID to other list(similarityOutput) (to help picking the similar messages)
+  *      2.4.2) if not - Add the above key to a HashMap as a key , and let the value to be the message ID
 3) go over the "similarityOutput" list, and for each ID pick the id from the Hashmap and print it as similarity group.
 
