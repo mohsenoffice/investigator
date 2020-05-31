@@ -1,4 +1,4 @@
-זההPrivate investigator
+Private investigator
 This project groups together similar sentences (sentences where only a single word has
 changed) and extracts the changes.
 
@@ -17,6 +17,7 @@ Number of lines in the file  --> N
 Parsing each line we create maximum M sentences (the different between 2 sentences is exactly one word)
 We go over the N Line and for each line, we create M sentences --> worst-case  O(M*N)
 To find similar sentence we go over M permutations of the line and check if it's existing in the hash (see how in the description file) --> O(M)
+
 ------
 So the time complexity is O(M*N)
 
