@@ -4,6 +4,7 @@ changed) and extracts the changes.
 
 
 **Assumptions:**
+
 1) All Lines starts with a timestamp that (in the format "date time") - otherwise it will be ignored
 2) Similar sentences have the same number of words
 3) The comparison is case sensitive
@@ -12,16 +13,22 @@ changed) and extracts the changes.
 6) Use MD5 to generate Unique ID for a string (Assume it's unique enough)
 
 **Time complexity:**
-Max sentens length (in words) --> M
-Number of lines in the file  --> N
+
+Max sentens length (in words) -> M
+
+Number of lines in the file  -> N
+
 Parsing each line we create maximum M sentences (the different between 2 sentences is exactly one word)
-We go over the N Line and for each line, we create M sentences --> worst-case  O(M*N)
-To find similar sentence we go over M permutations of the line and check if it's existing in the hash (see how in the description file) --> O(M)
+
+We go over the N Line and for each line, we create M sentences -> worst-case  O(M*N)
+
+To find similar sentence we go over M permutations of the line and check if it's existing in the hash (see how in the description file) -> O(M)
 
 So the time complexity is O(M*N)
 
 
 **If I have one more week:**
+
 1) Look for a better algorithm (to reduce memory consumption)
 2) Add concurrency to the process (e.g split the file into K files, then parse each file independently(in a separate thread),  then merge the files.
 3) Write logs and errors into a log file.
