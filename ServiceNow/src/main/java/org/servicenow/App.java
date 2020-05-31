@@ -4,13 +4,8 @@ import org.servicenow.controller.Investigator;
 import org.servicenow.controller.PrivateInvestigator;
 import org.servicenow.utilities.PropertiesReader;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 /**
- * Investigator
+ * Private Investigator
  *
  */
 public class App {
@@ -33,20 +28,5 @@ public class App {
         System.out.println("Total investigation time and printing the results : "+ (endTimeWithPrint-startTime) + "ms");
         System.out.println("Output file: " + PropertiesReader.getInstance().getProperty(OUTPUT_FILE));
         System.out.println("Done.");
-    }
-
-    static int getCode(String str){
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        try {
-            md.update(str.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return new BigInteger(1, md.digest()).intValue();
     }
 }
