@@ -1,7 +1,9 @@
-package org.servicenow.model;
+package org.servicenow.controller;
 
 import org.servicenow.controller.FilePrinter;
 import org.servicenow.controller.Printer;
+import org.servicenow.model.Sentence;
+import org.servicenow.model.Sentences;
 import org.servicenow.utilities.PropertiesReader;
 import org.servicenow.utilities.UniqueValueGenerator;
 
@@ -10,28 +12,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OutputData {
-    public static final String SPACE = " ";
+    //A map of all similar lines (e.g groups of potential sines to have similar lines)
+    HashMap<String, Set<Integer>> similarityMap;
+    //Similarity output map will include all the groups with more than one line from "similarityMap:
+    Set<String> similarityOutput;
+
     public static final String INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX = "investigator.private.first.word.index";
     public static final String THE_CHANGING_WORD_WAS = "The changing word was: ";
     public static final String Comma = ", ";
     public static final String NEW_LINE = "\n";
-    HashMap<String, Set<Integer>> similarityMap;
-    Set<String> similarityOutput;
+
 
     public OutputData() {
         similarityMap = new HashMap<>();
         similarityOutput = new HashSet<>();
     }
 
-    public void printSimilarLineIntoFile(){
-        //similarLines.forEach(System.out::println);
-    }
-
     public void add(Sentence sentence) {
         int firstIndex = Integer.parseInt(PropertiesReader.getInstance().getProperty(INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX));
 
         for(int i=firstIndex ; i<sentence.getSentenceArr().length ; i++){
-            int skipperKey = generateKey(sentence.getSentenceArr(), i);
+            int skipperKey = UniqueValueGenerator.generateKey(sentence.getSentenceArr(), i);
             addToSimilarityMap(skipperKey, i, sentence.getId());
         }
     }
@@ -46,18 +47,6 @@ public class OutputData {
             newSet.add(sentenceID);
             similarityMap.put(similarityMapKey,newSet);
         }
-    }
-
-    private int generateKey(String[] sentenceArray, int wordToSkip) {
-        StringBuilder subString = new StringBuilder();
-        int firstIndex = Integer.parseInt(PropertiesReader.getInstance().getProperty(INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX));
-        for(int i=firstIndex ; i<sentenceArray.length ; i++){
-            if(i == wordToSkip){
-                continue;
-            }
-            subString.append(sentenceArray[i]).append(SPACE);
-        }
-        return UniqueValueGenerator.getUniqueCode(subString.toString());
     }
 
     public void printResults(Sentences sentences) {

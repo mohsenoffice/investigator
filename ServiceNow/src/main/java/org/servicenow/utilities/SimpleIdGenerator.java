@@ -1,7 +1,4 @@
-package org.servicenow.model;
-
-import org.servicenow.utilities.PropertiesReader;
-import org.servicenow.utilities.UniqueValueGenerator;
+package org.servicenow.utilities;
 
 /**
  * Simple ID generator - behave like a counter

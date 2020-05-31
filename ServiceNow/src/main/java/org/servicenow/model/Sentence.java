@@ -1,12 +1,13 @@
 package org.servicenow.model;
 
-import org.servicenow.utilities.PropertiesReader;
+import org.servicenow.utilities.LineUtils;
+import org.servicenow.utilities.SimpleIdGenerator;
 
 import java.util.Arrays;
 
 public class Sentence {
     public static final String SPACE = " ";
-    public static final String INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX = "investigator.private.first.word.index";
+
 
     private int id;
     private String[] sentenceArr;
@@ -27,8 +28,8 @@ public class Sentence {
     }
 
     public boolean isValid() {
-        int firstIndex = Integer.parseInt(PropertiesReader.getInstance().getProperty(INVESTIGATOR_PRIVATE_FIRST_WORD_INDEX));
-        return sentenceArr.length > firstIndex;
+        return LineUtils.isValid(sentenceArr);
+
     }
 
     public String getWordAtIndex(int index) {
