@@ -1,4 +1,5 @@
 **Private investigator**
+
 This project groups together similar sentences (sentences where only a single word has
 changed) and extracts the changes.
 
