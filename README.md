@@ -50,7 +50,7 @@ So the time complexity is O(M*N)
 1) Use Spring framework (MVC or Spring-boot)
 2) Use diterputed computing - it heps in scale
 
-** The general Idea of the solution **
+**The general Idea of the solution**
 1) Open the input file (take path from properies file)
 2) Read the file line by line and for each line
 - 2.1) Validate and trim the timestemp (gnore non valid and existing lines)
