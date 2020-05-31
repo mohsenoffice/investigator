@@ -9,7 +9,7 @@ changed) and extracts the changes.
 1) All Lines starts with a timestamp that (in the format "date time") - otherwise it will be ignored
 2) Similar sentences have the same number of words
 3) The comparison is case sensitive
-4) Only extra spaces are ignored. e.g  "a     b   "  AND "a b" are the same sentence (Special characters are not ignored!).
+4) Only extra spaces are ignored. e.g  "a &nbsp;&nbsp;&nbsp; b &nbsp;&nbsp;&nbsp; "  AND "a b" are the same sentence (Special characters are not ignored!).
 5) All the text file can be loaded into the memory
 6) Use MD5 to generate Unique ID for a string (Assume it's unique enough)
 
