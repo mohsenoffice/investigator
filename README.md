@@ -57,7 +57,7 @@ So the time complexity is O(M*N)
 5) Add GUI
 6) create a more efficient function for a unique value generator.
 
-** TO DO better: **
+**TO DO better:**
 1) Use Spring framework (MVC or Spring-boot)
 2) Use diterputed computing - it heps in scale
 
